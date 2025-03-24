@@ -1,31 +1,88 @@
-# Day One Journal Entry Creator
+# Day One CLI Entry Creator
 
-A simple web app that creates random journal entries with user bio information and saves them to Day One using the Day One CLI.
+A modern web application for creating and managing Day One journal entries using the Day One Command Line Interface (CLI).
 
-## Setup
+![Day One CLI Entry Creator](https://i.imgur.com/6Gij3Gl.png)
 
-1. Make sure you have Node.js installed
-2. Make sure the Day One CLI is installed and accessible
-3. Run these commands to start the app:
+## Features
 
-```bash
-npm install
-npm start
-```
+- 🎭 **User Bio System**: Select from a collection of pre-configured user bios including name, occupation, and personal details
+- 📝 **Random Entry Generation**: Create sample journal entries with a single click
+- 🏷️ **Flexible Tagging**: Add both built-in and custom tags to your journal entries
+- 📅 **Custom Date Support**: Specify custom dates and times for your entries
+- 🎨 **Theme Customization**: Choose from 12 different themes with the built-in theme switcher
+- 🖥️ **CLI Command Preview**: See exactly what command will be used to create your entry
+- 🔄 **Real-time Updates**: UI updates in real-time as you make changes
 
-4. Open your browser to the URL shown in the console (the server will find an available port)
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) (v14 or newer)
+- [Day One CLI](https://dayoneapp.com/guides/documentation/cli-documentation) installed
+- Day One app for macOS
+
+## Installation
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/yourusername/day-one-cli-entry-creator.git
+   cd day-one-cli-entry-creator
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the application:
+   ```bash
+   npm start
+   ```
+
+4. Open your browser to the URL shown in the terminal (typically http://localhost:3003)
 
 ## Usage
 
-1. Select a user bio from the dropdown
-2. Click "Create Entry" to generate a random journal entry combined with the selected bio
-3. Edit the entry text if desired
-4. Click "Save to Day One" to save the entry to your Day One journal using the CLI
+### Creating an Entry
 
-## Files
+1. Select a user bio from the dropdown
+2. Click "Create Entry" to generate a random journal entry
+3. Edit the entry text if desired
+4. Optionally add tags or set a custom date
+5. Click "Save to Day One" to add the entry to your journal
+
+### Tag Management
+
+- The "DOSampleEntry" tag is applied to all entries by default
+- Select additional built-in tags by checking the corresponding boxes
+- Add custom tags by entering them in the custom tags field, separated by commas
+
+### Custom Dates
+
+- Check "Use custom date for entry" to specify a custom date
+- Select the desired date and time using the date picker
+
+### Themes
+
+- Click the "Theme" button in the top left to select from different themes
+- The theme selection is saved between sessions
+
+## Technical Details
+
+This application uses:
+
+- Express.js for the backend server
+- DaisyUI and Tailwind CSS for the interface
+- Day One CLI for journal interactions
+- Modern JavaScript with async/await patterns
+
+## File Structure
 
 - `index.html` - The web interface
-- `server.js` - Simple Express server to handle Day One CLI commands
-- `sample-bio.json` - User bio data
+- `server.js` - Express server that handles Day One CLI commands
+- `sample-bio.json` - Collection of user bios
 - `sample-entries.json` - Sample journal entry texts
 - `docli-documentation.md` - Documentation for the Day One CLI
+
+## License
+
+MIT License

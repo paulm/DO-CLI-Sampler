@@ -81,12 +81,54 @@
                     <input type="datetime-local" id="custom-date" class="input input-bordered mt-2" style="display: none;" />
                 </div>
                 
+                <div class="form-control mt-4">
+                    <label class="label">
+                        <span class="label-text font-medium">Tags</span>
+                    </label>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        <div class="form-control">
+                            <label class="cursor-pointer label gap-2">
+                                <input type="checkbox" class="checkbox checkbox-primary tag-checkbox" value="DOSampleEntry" checked disabled />
+                                <span class="label-text">DOSampleEntry</span>
+                            </label>
+                        </div>
+                        <div class="form-control">
+                            <label class="cursor-pointer label gap-2">
+                                <input type="checkbox" class="checkbox checkbox-primary tag-checkbox" value="CLI Sample" />
+                                <span class="label-text">CLI Sample</span>
+                            </label>
+                        </div>
+                        <div class="form-control">
+                            <label class="cursor-pointer label gap-2">
+                                <input type="checkbox" class="checkbox checkbox-primary tag-checkbox" value="Test" />
+                                <span class="label-text">Test</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="text" id="custom-tags" placeholder="Add custom tags (comma separated)" class="input input-bordered w-full" />
+                    </div>
+                    <span class="text-xs opacity-70 mt-1">Default tag "DOSampleEntry" will always be applied</span>
+                </div>
+                
                 <button id="save-to-dayone-btn" class="btn btn-accent mt-6">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
                     </svg>
                     Save to Day One
                 </button>
+                
+                <div class="mt-6">
+                    <div class="collapse collapse-arrow bg-base-200">
+                        <input type="checkbox" id="show-command" /> 
+                        <div class="collapse-title font-medium">
+                            Show CLI Command
+                        </div>
+                        <div class="collapse-content"> 
+                            <pre id="command-preview" class="bg-base-300 p-4 rounded-lg text-sm overflow-x-auto">Command will appear here</pre>
+                        </div>
+                    </div>
+                </div>
                 
                 <div id="status-message" class="mt-4"></div>
             </div>
@@ -197,6 +239,11 @@
             // Display in the textarea
             document.getElementById('entry-text').value = combinedText;
             
+            // Update command preview if visible
+            if (document.getElementById('show-command').checked) {
+                updateCommandPreview();
+            }
+            
             showAlert('New journal entry created! You can edit it before saving.', 'success');
         }
         
@@ -254,9 +301,20 @@
             // Encode the entry text to handle special characters and quotes
             const encodedText = encodeURIComponent(entryText);
             
-            // Check if custom date is enabled
-            let url = `/save-to-dayone?text=${encodedText}`;
+            // Get all selected tags
+            const tags = getSelectedTags();
+            console.log('Selected tags:', tags);
             
+            const tagsJSON = JSON.stringify(tags);
+            console.log('Tags JSON:', tagsJSON);
+            
+            const tagsString = encodeURIComponent(tagsJSON);
+            console.log('Encoded tags string:', tagsString);
+            
+            // Build the URL with parameters
+            let url = `/save-to-dayone?text=${encodedText}&tags=${tagsString}`;
+            
+            // Add custom date if enabled
             if (document.getElementById('use-custom-date').checked) {
                 const customDate = document.getElementById('custom-date').value;
                 if (customDate) {
@@ -276,11 +334,77 @@
                     return response.text();
                 })
                 .then(result => {
-                    showAlert('Saved to Day One successfully!', 'success');
+                    const tagCount = tags.length;
+                    const tagMessage = tagCount === 1 
+                        ? `with tag "${tags[0]}"` 
+                        : `with ${tagCount} tags`;
+                    showAlert(`Saved to Day One successfully ${tagMessage}!`, 'success');
                 })
                 .catch(error => {
                     showAlert('Error saving to Day One: ' + error.message, 'error');
                 });
+        }
+        
+        // Get all selected tags
+        function getSelectedTags() {
+            // Start with the default tag
+            const tags = ["DOSampleEntry"];
+            
+            // Add checked tags from checkboxes (except the default one which is already included)
+            document.querySelectorAll('.tag-checkbox:checked:not([disabled])').forEach(checkbox => {
+                tags.push(checkbox.value);
+            });
+            
+            // Add custom tags if any
+            const customTagsInput = document.getElementById('custom-tags').value.trim();
+            if (customTagsInput) {
+                // Split by comma and trim whitespace
+                const customTags = customTagsInput.split(',').map(tag => tag.trim()).filter(tag => tag);
+                tags.push(...customTags);
+            }
+            
+            return tags;
+        }
+        
+        // Format tags for CLI command
+        function formatTagsForCommand(tags) {
+            // Join all tags with space delimiter for CLI
+            return tags.map(tag => `"${tag}"`).join(' ');
+        }
+        
+        // Create command preview
+        function updateCommandPreview() {
+            const entryText = document.getElementById('entry-text').value.trim();
+            if (!entryText) {
+                document.getElementById('command-preview').textContent = 'Please create an entry first';
+                return;
+            }
+            
+            // Build command preview - 'new' command first
+            let command = 'dayone2 new';
+            
+            // Add shortened entry text for preview
+            const shortText = entryText.length > 50 
+                ? entryText.substring(0, 50) + '...' 
+                : entryText;
+            
+            command += ` "${shortText.replace(/"/g, '\\"')}"`;
+            
+            // Add date option if provided
+            if (document.getElementById('use-custom-date').checked) {
+                const customDate = document.getElementById('custom-date').value;
+                if (customDate) {
+                    const date = new Date(customDate);
+                    const formattedDate = date.toISOString().replace('T', ' ').substring(0, 19);
+                    command += ` --date="${formattedDate}"`;
+                }
+            }
+            
+            // Add tags
+            const tags = getSelectedTags();
+            command += ` --tags ${formatTagsForCommand(tags)}`;
+            
+            document.getElementById('command-preview').textContent = command;
         }
         
         // Toggle custom date input display
@@ -298,6 +422,46 @@
                 customDateInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
             } else {
                 customDateInput.style.display = 'none';
+            }
+            
+            // Update command preview whenever date setting changes
+            updateCommandPreview();
+        });
+        
+        // Toggle show command
+        document.getElementById('show-command').addEventListener('change', function() {
+            if (this.checked) {
+                updateCommandPreview();
+            }
+        });
+        
+        // Update command preview when entry text changes
+        document.getElementById('entry-text').addEventListener('input', function() {
+            if (document.getElementById('show-command').checked) {
+                updateCommandPreview();
+            }
+        });
+        
+        // Update command preview when custom date changes
+        document.getElementById('custom-date').addEventListener('change', function() {
+            if (document.getElementById('show-command').checked) {
+                updateCommandPreview();
+            }
+        });
+        
+        // Add event listeners for tag checkboxes
+        document.querySelectorAll('.tag-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (document.getElementById('show-command').checked) {
+                    updateCommandPreview();
+                }
+            });
+        });
+        
+        // Add event listener for custom tags input
+        document.getElementById('custom-tags').addEventListener('input', function() {
+            if (document.getElementById('show-command').checked) {
+                updateCommandPreview();
             }
         });
         

@@ -1,5 +1,5 @@
 const express = require('express');
-const { exec } = require('child_process');
+const { exec, spawn } = require('child_process');
 const path = require('path');
 const http = require('http');
 
@@ -13,6 +13,7 @@ app.use(express.static(__dirname));
 app.get('/save-to-dayone', (req, res) => {
     const entryText = req.query.text;
     const customDate = req.query.date;
+    const tagsParam = req.query.tags;
     
     if (!entryText) {
         return res.status(400).send('No entry text provided');
@@ -21,31 +22,59 @@ app.get('/save-to-dayone', (req, res) => {
     // Decode the URL-encoded text
     const decodedText = decodeURIComponent(entryText);
     
+    // Additional logging for debugging
+    console.log('Entry text:', entryText);
+    console.log('Custom date:', customDate);
+    console.log('Tags param:', tagsParam);
+    
+    // Let's try executing the command directly as a string - this may work better with the Day One CLI
     // Build the Day One CLI command
-    let command = `dayone2`;
+    let shellCommand = `dayone2 new "${decodedText.replace(/"/g, '\\"')}"`;
     
     // Add date option if provided
     if (customDate) {
         const date = new Date(customDate);
         const formattedDate = date.toISOString().replace('T', ' ').substring(0, 19);
-        command += ` --date="${formattedDate}"`;
+        shellCommand += ` --date="${formattedDate}"`;
     }
     
-    // Add the new entry command and text
-    command += ` new "${decodedText.replace(/"/g, '\\"')}"`;
+    // Add tags
+    if (tagsParam) {
+        try {
+            // Parse JSON array of tags
+            const tags = JSON.parse(decodeURIComponent(tagsParam));
+            
+            // Format tags with proper quoting
+            const tagsFormatted = tags.map(tag => `"${tag}"`).join(' ');
+            shellCommand += ` --tags ${tagsFormatted}`;
+        } catch (error) {
+            console.error('Error parsing tags:', error);
+            // Fallback to default tag
+            shellCommand += ` --tags "DOSampleEntry"`;
+        }
+    } else {
+        // Fallback to default tag
+        shellCommand += ` --tags "DOSampleEntry"`;
+    }
     
-    console.log(`Executing command: ${command}`);
+    console.log('Using shell command:', shellCommand);
     
-    // Execute the command
-    exec(command, (error, stdout, stderr) => {
+    // Try with exec and shell
+    exec(shellCommand, { shell: '/bin/bash' }, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error executing command: ${error}`);
+            console.error(`stderr: ${stderr}`);
             return res.status(500).send(`Error saving to Day One: ${error.message}`);
         }
         
+        console.log(`stdout: ${stdout}`);
+        if (stderr) console.log(`stderr: ${stderr}`);
+        
         console.log('Entry saved to Day One successfully');
-        res.send('Entry saved to Day One successfully');
+        return res.send('Entry saved to Day One successfully');
     });
+    
+    // End of exec method
 });
 
 // Try ports from 3000 to 3050
