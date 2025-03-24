@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day One Journal Entry Creator</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-base-200 min-h-screen py-8">
+    <div class="navbar bg-primary text-primary-content mb-6">
+        <div class="navbar-start">
+            <div class="dropdown">
+                <div tabindex="0" role="button" class="btn btn-ghost">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                    </svg>
+                    Theme
+                </div>
+                <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 text-base-content">
+                    <li><a onclick="setTheme('light')">Light</a></li>
+                    <li><a onclick="setTheme('dark')">Dark</a></li>
+                    <li><a onclick="setTheme('cupcake')">Cupcake</a></li>
+                    <li><a onclick="setTheme('bumblebee')">Bumblebee</a></li>
+                    <li><a onclick="setTheme('emerald')">Emerald</a></li>
+                    <li><a onclick="setTheme('corporate')">Corporate</a></li>
+                    <li><a onclick="setTheme('synthwave')">Synthwave</a></li>
+                    <li><a onclick="setTheme('retro')">Retro</a></li>
+                    <li><a onclick="setTheme('cyberpunk')">Cyberpunk</a></li>
+                    <li><a onclick="setTheme('valentine')">Valentine</a></li>
+                    <li><a onclick="setTheme('halloween')">Halloween</a></li>
+                    <li><a onclick="setTheme('aqua')">Aqua</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="navbar-center">
+            <div class="flex items-center">
+                <div class="mr-2">
+                    <svg width="28" height="28" viewBox="0 0 105 105" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M52.5 105C81.4949 105 105 81.4949 105 52.5C105 23.5051 81.4949 0 52.5 0C23.5051 0 0 23.5051 0 52.5C0 81.4949 23.5051 105 52.5 105Z" fill="currentColor"/>
+                        <path d="M52.3969 25.6458C37.6042 25.6458 25.6458 37.6042 25.6458 52.3969C25.6458 67.1897 37.6042 79.148 52.3969 79.148C67.1897 79.148 79.148 67.1897 79.148 52.3969C79.148 37.6042 67.1897 25.6458 52.3969 25.6458ZM45.7284 65.2469H38.6284V39.0284H45.7284V65.2469ZM66.7597 65.2469H59.6597V39.0284H66.7597V65.2469Z" fill="white"/>
+                    </svg>
+                </div>
+                <a class="text-xl font-bold">Day One Journal Entry Creator</a>
+            </div>
+        </div>
+        <div class="navbar-end">
+            <div id="current-date" class="text-sm opacity-80"></div>
+        </div>
+    </div>
+    
+    <div class="container mx-auto px-4 max-w-3xl">
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title text-xl mb-4">Select User Bio</h2>
+                <select id="bio-selector" class="select select-bordered w-full">
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+                
+                <div class="card bg-base-200 mt-4 p-4">
+                    <div class="font-bold text-lg" id="selected-name"></div>
+                    <div class="text-sm opacity-70 mb-2" id="selected-occupation"></div>
+                    <div id="selected-about"></div>
+                </div>
+                
+                <button id="create-entry-btn" class="btn btn-primary mt-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Create Entry
+                </button>
+                
+                <h2 class="card-title text-xl mt-8 mb-4">Journal Entry</h2>
+                <textarea id="entry-text" class="textarea textarea-bordered h-48 w-full" placeholder="Your journal entry will appear here..."></textarea>
+                
+                <div class="form-control mt-4">
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="use-custom-date" class="checkbox checkbox-primary" />
+                        <label for="use-custom-date">Use custom date for entry</label>
+                    </div>
+                    <input type="datetime-local" id="custom-date" class="input input-bordered mt-2" style="display: none;" />
+                </div>
+                
+                <button id="save-to-dayone-btn" class="btn btn-accent mt-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                    </svg>
+                    Save to Day One
+                </button>
+                
+                <div id="status-message" class="mt-4"></div>
+            </div>
+        </div>
+        
+        <div class="mt-6 text-center text-sm opacity-70">
+            <p>Powered by DaisyUI and Day One CLI</p>
+        </div>
+    </div>
+
+    <script>
+        // Load the data
+        let bioData;
+        let entriesData;
+        
+        // Set theme
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        }
+        
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            setTheme(savedTheme);
+        }
+        
+        // Display current date
+        function updateCurrentDate() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
+        }
+        
+        // Update date every minute
+        updateCurrentDate();
+        setInterval(updateCurrentDate, 60000);
+        
+        // Fetch bio data
+        fetch('sample-bio.json')
+            .then(response => response.json())
+            .then(data => {
+                bioData = data;
+                populateBioSelector();
+                updateSelectedBio();
+            })
+            .catch(error => {
+                showAlert('Error loading bio data: ' + error.message, 'error');
+            });
+            
+        // Fetch entries data
+        fetch('sample-entries.json')
+            .then(response => response.json())
+            .then(data => {
+                entriesData = data;
+            })
+            .catch(error => {
+                showAlert('Error loading entries data: ' + error.message, 'error');
+            });
+        
+        // Populate the bio selector dropdown
+        function populateBioSelector() {
+            const selector = document.getElementById('bio-selector');
+            
+            for (let i = 0; i < bioData.name.length; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = bioData.name[i];
+                selector.appendChild(option);
+            }
+        }
+        
+        // Update the displayed bio information
+        function updateSelectedBio() {
+            const selectedIndex = document.getElementById('bio-selector').value;
+            
+            document.getElementById('selected-name').textContent = bioData.name[selectedIndex];
+            document.getElementById('selected-occupation').textContent = bioData.occupation[selectedIndex];
+            document.getElementById('selected-about').textContent = bioData.aboutMe[selectedIndex];
+        }
+        
+        // Generate a random entry combined with the selected bio
+        function createEntry() {
+            if (!bioData || !entriesData) {
+                showAlert('Data is still loading. Please try again in a moment.', 'warning');
+                return;
+            }
+            
+            const selectedIndex = document.getElementById('bio-selector').value;
+            const name = bioData.name[selectedIndex];
+            const occupation = bioData.occupation[selectedIndex];
+            const about = bioData.aboutMe[selectedIndex];
+            
+            // Select a random entry text
+            const randomEntryIndex = Math.floor(Math.random() * entriesData.entries.length);
+            const entryText = entriesData.entries[randomEntryIndex];
+            
+            // Combine the bio and entry text
+            const combinedText = `${name} - ${occupation}\n\n${about}\n\n${entryText}`;
+            
+            // Display in the textarea
+            document.getElementById('entry-text').value = combinedText;
+            
+            showAlert('New journal entry created! You can edit it before saving.', 'success');
+        }
+        
+        // Show alert using DaisyUI
+        function showAlert(message, type = 'info') {
+            const statusMessage = document.getElementById('status-message');
+            
+            // Clear previous alerts
+            statusMessage.innerHTML = '';
+            
+            // Create alert
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            
+            // Alert content with icon
+            let icon = '';
+            if (type === 'success') {
+                icon = '<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+            } else if (type === 'warning') {
+                icon = '<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>';
+            } else if (type === 'error') {
+                icon = '<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+            } else {
+                icon = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+            }
+            
+            alertDiv.innerHTML = `
+                ${icon}
+                <span>${message}</span>
+            `;
+            
+            statusMessage.appendChild(alertDiv);
+            
+            // Auto hide after 5 seconds for success and info messages
+            if (type === 'success' || type === 'info') {
+                setTimeout(() => {
+                    alertDiv.style.opacity = '0';
+                    alertDiv.style.transition = 'opacity 0.5s';
+                    setTimeout(() => {
+                        statusMessage.removeChild(alertDiv);
+                    }, 500);
+                }, 5000);
+            }
+        }
+        
+        // Save the entry to Day One using the CLI
+        function saveToJournal() {
+            const entryText = document.getElementById('entry-text').value.trim();
+            
+            if (!entryText) {
+                showAlert('Please create an entry first.', 'warning');
+                return;
+            }
+            
+            // Encode the entry text to handle special characters and quotes
+            const encodedText = encodeURIComponent(entryText);
+            
+            // Check if custom date is enabled
+            let url = `/save-to-dayone?text=${encodedText}`;
+            
+            if (document.getElementById('use-custom-date').checked) {
+                const customDate = document.getElementById('custom-date').value;
+                if (customDate) {
+                    url += `&date=${encodeURIComponent(customDate)}`;
+                }
+            }
+            
+            // Show saving status
+            showAlert('Saving to Day One...', 'info');
+            
+            // Execute the Day One CLI command
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Server responded with status ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(result => {
+                    showAlert('Saved to Day One successfully!', 'success');
+                })
+                .catch(error => {
+                    showAlert('Error saving to Day One: ' + error.message, 'error');
+                });
+        }
+        
+        // Toggle custom date input display
+        document.getElementById('use-custom-date').addEventListener('change', function() {
+            const customDateInput = document.getElementById('custom-date');
+            if (this.checked) {
+                customDateInput.style.display = 'block';
+                // Set default value to current datetime
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                customDateInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+            } else {
+                customDateInput.style.display = 'none';
+            }
+        });
+        
+        // Event listeners
+        document.getElementById('bio-selector').addEventListener('change', updateSelectedBio);
+        document.getElementById('create-entry-btn').addEventListener('click', createEntry);
+        document.getElementById('save-to-dayone-btn').addEventListener('click', saveToJournal);
+    </script>
+</body>
+</html>

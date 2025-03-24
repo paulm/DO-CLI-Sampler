@@ -1,0 +1,38 @@
+{
+  "name": [
+    "Alex Morgan",
+    "Taylor Chen",
+    "Jordan Rivera",
+    "Casey Washington",
+    "Morgan Zhang",
+    "Jamie Rodriguez",
+    "Sam Patel",
+    "Quinn O'Connor",
+    "Riley Kim",
+    "Avery Nguyen"
+  ],
+  "occupation": [
+    "Software Engineer at a fintech startup",
+    "Freelance graphic designer and illustrator",
+    "Elementary school teacher for 3rd grade",
+    "Environmental scientist studying coastal ecosystems",
+    "Digital marketing specialist for e-commerce brands",
+    "Registered nurse in pediatric intensive care",
+    "Independent coffee shop owner",
+    "Urban planning consultant for sustainable cities",
+    "Professional photographer specializing in weddings",
+    "Physical therapist working with athletes"
+  ],
+  "aboutMe": [
+    "Avid hiker who's conquered 12 national parks so far. Dog parent to a golden retriever named Luna. Always on the hunt for the perfect burrito.",
+    "Amateur astronomy enthusiast with my own telescope. Can solve a Rubik's cube in under 2 minutes. Learning to play the ukulele in my spare time.",
+    "Published poet with two small collections. Volunteer literacy tutor on weekends. Grew up in rural Montana and miss the stars.",
+    "Former college basketball player. Passionate home baker specializing in sourdough. Currently learning American Sign Language.",
+    "Lived in 4 different countries growing up. Fluent in Mandarin and Spanish. Love to host dinner parties featuring fusion cuisine.",
+    "Marathon runner with 6 completed races. Collect vintage vinyl records. Started a neighborhood community garden three years ago.",
+    "First-generation college graduate. Amateur stand-up comedian at local open mics. Makes handcrafted ceramics as a meditative practice.",
+    "Retired military veteran. Passionate about wildlife photography. Currently restoring a 1967 Volkswagen Beetle.",
+    "Devoted parent of twins. Competitive chess player since childhood. Working on writing a science fiction novel in my spare time.",
+    "Former Peace Corps volunteer in Ecuador. Practice meditation daily. Weekends are for rock climbing and fermenting kombucha."
+  ]
+} 
