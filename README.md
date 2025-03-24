@@ -1,4 +1,4 @@
-# Day One CLI Entry Creator
+# DO-CLI-Sampler
 
 A modern web application for creating and managing Day One journal entries using the Day One Command Line Interface (CLI).
 
@@ -24,8 +24,8 @@ A modern web application for creating and managing Day One journal entries using
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/day-one-cli-entry-creator.git
-   cd day-one-cli-entry-creator
+   git clone https://github.com/yourusername/DO-CLI-Sampler.git
+   cd DO-CLI-Sampler
    ```
 
 2. Install dependencies:

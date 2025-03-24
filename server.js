@@ -38,6 +38,17 @@ app.get('/save-to-dayone', (req, res) => {
         shellCommand += ` --date="${formattedDate}"`;
     }
     
+    // Add journal if provided
+    if (req.query.journal) {
+        const journalName = decodeURIComponent(req.query.journal);
+        shellCommand += ` --journal="${journalName}"`;
+    }
+    
+    // Add starred flag if requested
+    if (req.query.starred === 'true') {
+        shellCommand += ' --starred';
+    }
+    
     // Add tags
     if (tagsParam) {
         try {

@@ -1,5 +1,5 @@
 {
-  "name": "dayone-entry-creator",
+  "name": "do-cli-sampler",
   "version": "1.0.0",
   "description": "Simple web app to create Day One journal entries",
   "main": "server.js",

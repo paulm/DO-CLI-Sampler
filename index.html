@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day One Journal Entry Creator</title>
+    <title>DO-CLI-Sampler</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -41,7 +41,7 @@
                         <path d="M52.3969 25.6458C37.6042 25.6458 25.6458 37.6042 25.6458 52.3969C25.6458 67.1897 37.6042 79.148 52.3969 79.148C67.1897 79.148 79.148 67.1897 79.148 52.3969C79.148 37.6042 67.1897 25.6458 52.3969 25.6458ZM45.7284 65.2469H38.6284V39.0284H45.7284V65.2469ZM66.7597 65.2469H59.6597V39.0284H66.7597V65.2469Z" fill="white"/>
                     </svg>
                 </div>
-                <a class="text-xl font-bold">Day One Journal Entry Creator</a>
+                <a class="text-xl font-bold">DO-CLI-Sampler</a>
             </div>
         </div>
         <div class="navbar-end">
@@ -79,6 +79,20 @@
                         <label for="use-custom-date">Use custom date for entry</label>
                     </div>
                     <input type="datetime-local" id="custom-date" class="input input-bordered mt-2" style="display: none;" />
+                </div>
+                
+                <div class="form-control mt-4">
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="starred" class="checkbox checkbox-warning" />
+                        <label for="starred">Starred entry</label>
+                    </div>
+                </div>
+                
+                <div class="form-control mt-4">
+                    <label class="label">
+                        <span class="label-text font-medium">Journal Name (optional)</span>
+                    </label>
+                    <input type="text" id="journal-name" placeholder="Default journal will be used if empty" class="input input-bordered w-full" />
                 </div>
                 
                 <div class="form-control mt-4">
@@ -322,6 +336,17 @@
                 }
             }
             
+            // Add journal name if provided
+            const journalName = document.getElementById('journal-name').value.trim();
+            if (journalName) {
+                url += `&journal=${encodeURIComponent(journalName)}`;
+            }
+            
+            // Add starred flag if checked
+            if (document.getElementById('starred').checked) {
+                url += '&starred=true';
+            }
+            
             // Show saving status
             showAlert('Saving to Day One...', 'info');
             
@@ -398,6 +423,17 @@
                     const formattedDate = date.toISOString().replace('T', ' ').substring(0, 19);
                     command += ` --date="${formattedDate}"`;
                 }
+            }
+            
+            // Add journal if provided
+            const journalName = document.getElementById('journal-name').value.trim();
+            if (journalName) {
+                command += ` --journal="${journalName}"`;
+            }
+            
+            // Add starred flag if checked
+            if (document.getElementById('starred').checked) {
+                command += ' --starred';
             }
             
             // Add tags
