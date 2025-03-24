@@ -2,7 +2,8 @@
 
 A modern web application for creating and managing Day One journal entries using the Day One Command Line Interface (CLI).
 
-![Day One CLI Entry Creator](https://i.imgur.com/6Gij3Gl.png)
+![Day One CLI Entry Creator](https://github.com/user-attachments/assets/82e04c80-f477-4002-af04-5b79856a8fab)
+
 
 ## Features
 
