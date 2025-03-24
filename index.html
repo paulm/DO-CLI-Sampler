@@ -82,6 +82,52 @@
                 </div>
                 
                 <div class="form-control mt-4">
+                    <label class="label">
+                        <span class="label-text font-medium">Time Zone (optional)</span>
+                    </label>
+                    <select id="time-zone" class="select select-bordered w-full">
+                        <option value="">Use system timezone</option>
+                        <optgroup label="Common Timezones">
+                            <option value="America/New_York">America/New_York (UTC-05:00/UTC-04:00)</option>
+                            <option value="America/Chicago">America/Chicago (UTC-06:00/UTC-05:00)</option>
+                            <option value="America/Denver">America/Denver (UTC-07:00/UTC-06:00)</option>
+                            <option value="America/Los_Angeles">America/Los_Angeles (UTC-08:00/UTC-07:00)</option>
+                            <option value="America/Anchorage">America/Anchorage (UTC-09:00/UTC-08:00)</option>
+                            <option value="Pacific/Honolulu">Pacific/Honolulu (UTC-10:00)</option>
+                            <option value="Europe/London">Europe/London (UTC+00:00/UTC+01:00)</option>
+                            <option value="Europe/Paris">Europe/Paris (UTC+01:00/UTC+02:00)</option>
+                            <option value="Europe/Moscow">Europe/Moscow (UTC+03:00)</option>
+                            <option value="Asia/Tokyo">Asia/Tokyo (UTC+09:00)</option>
+                            <option value="Australia/Sydney">Australia/Sydney (UTC+10:00/UTC+11:00)</option>
+                        </optgroup>
+                        <optgroup label="GMT Offsets">
+                            <option value="GMT-0800">GMT-0800</option>
+                            <option value="GMT-0700">GMT-0700</option>
+                            <option value="GMT-0600">GMT-0600</option>
+                            <option value="GMT-0500">GMT-0500</option>
+                            <option value="GMT-0400">GMT-0400</option>
+                            <option value="GMT-0300">GMT-0300</option>
+                            <option value="GMT-0200">GMT-0200</option>
+                            <option value="GMT-0100">GMT-0100</option>
+                            <option value="GMT+0000">GMT+0000</option>
+                            <option value="GMT+0100">GMT+0100</option>
+                            <option value="GMT+0200">GMT+0200</option>
+                            <option value="GMT+0300">GMT+0300</option>
+                            <option value="GMT+0400">GMT+0400</option>
+                            <option value="GMT+0500">GMT+0500</option>
+                            <option value="GMT+0600">GMT+0600</option>
+                            <option value="GMT+0700">GMT+0700</option>
+                            <option value="GMT+0800">GMT+0800</option>
+                            <option value="GMT+0900">GMT+0900</option>
+                            <option value="GMT+1000">GMT+1000</option>
+                            <option value="GMT+1100">GMT+1100</option>
+                            <option value="GMT+1200">GMT+1200</option>
+                        </optgroup>
+                    </select>
+                    <span class="text-xs opacity-70 mt-1">Select a timezone or leave empty for system default</span>
+                </div>
+                
+                <div class="form-control mt-4">
                     <div class="flex items-center gap-2">
                         <input type="checkbox" id="starred" class="checkbox checkbox-warning" />
                         <label for="starred">Starred entry</label>
@@ -102,7 +148,7 @@
                     <div class="flex flex-wrap gap-2 mb-2">
                         <div class="form-control">
                             <label class="cursor-pointer label gap-2">
-                                <input type="checkbox" class="checkbox checkbox-primary tag-checkbox" value="DOSampleEntry" checked disabled />
+                                <input type="checkbox" class="checkbox checkbox-primary tag-checkbox" value="DOSampleEntry" />
                                 <span class="label-text">DOSampleEntry</span>
                             </label>
                         </div>
@@ -122,26 +168,36 @@
                     <div class="flex items-center gap-2">
                         <input type="text" id="custom-tags" placeholder="Add custom tags (comma separated)" class="input input-bordered w-full" />
                     </div>
-                    <span class="text-xs opacity-70 mt-1">Default tag "DOSampleEntry" will always be applied</span>
                 </div>
                 
-                <button id="save-to-dayone-btn" class="btn btn-accent mt-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                    </svg>
-                    Save to Day One
-                </button>
-                
                 <div class="mt-6">
-                    <div class="collapse collapse-arrow bg-base-200">
-                        <input type="checkbox" id="show-command" /> 
-                        <div class="collapse-title font-medium">
-                            Show CLI Command
+                    <div class="bg-base-200 p-4 rounded-lg">
+                        <div class="font-medium flex justify-between items-center mb-2">
+                            <span>CLI Command</span>
+                            <button id="copy-command-btn" class="btn btn-sm btn-ghost" title="Copy to clipboard">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                </svg>
+                            </button>
                         </div>
-                        <div class="collapse-content"> 
-                            <pre id="command-preview" class="bg-base-300 p-4 rounded-lg text-sm overflow-x-auto">Command will appear here</pre>
-                        </div>
+                        <pre id="command-preview" class="bg-base-300 p-3 rounded-lg text-xs whitespace-pre-wrap break-words">Command will appear here</pre>
                     </div>
+                </div>
+                
+                <div class="flex gap-3 mt-6">
+                    <button id="save-to-dayone-btn" class="btn btn-accent">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        Run Command
+                    </button>
+                    
+                    <button id="open-entry-btn" class="btn btn-secondary" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                        Open Entry
+                    </button>
                 </div>
                 
                 <div id="status-message" class="mt-4"></div>
@@ -303,80 +359,70 @@
             }
         }
         
-        // Save the entry to Day One using the CLI
+        // Get the exact command to run
+        function getExactCommand() {
+            return document.getElementById('command-preview').textContent;
+        }
+        
+        // Save the entry to Day One using the CLI command directly
         function saveToJournal() {
-            const entryText = document.getElementById('entry-text').value.trim();
+            const commandText = getExactCommand();
             
-            if (!entryText) {
+            if (!commandText || commandText === 'Please create an entry first') {
                 showAlert('Please create an entry first.', 'warning');
                 return;
             }
             
-            // Encode the entry text to handle special characters and quotes
-            const encodedText = encodeURIComponent(entryText);
-            
-            // Get all selected tags
-            const tags = getSelectedTags();
-            console.log('Selected tags:', tags);
-            
-            const tagsJSON = JSON.stringify(tags);
-            console.log('Tags JSON:', tagsJSON);
-            
-            const tagsString = encodeURIComponent(tagsJSON);
-            console.log('Encoded tags string:', tagsString);
-            
-            // Build the URL with parameters
-            let url = `/save-to-dayone?text=${encodedText}&tags=${tagsString}`;
-            
-            // Add custom date if enabled
-            if (document.getElementById('use-custom-date').checked) {
-                const customDate = document.getElementById('custom-date').value;
-                if (customDate) {
-                    url += `&date=${encodeURIComponent(customDate)}`;
-                }
-            }
-            
-            // Add journal name if provided
-            const journalName = document.getElementById('journal-name').value.trim();
-            if (journalName) {
-                url += `&journal=${encodeURIComponent(journalName)}`;
-            }
-            
-            // Add starred flag if checked
-            if (document.getElementById('starred').checked) {
-                url += '&starred=true';
-            }
-            
             // Show saving status
-            showAlert('Saving to Day One...', 'info');
+            showAlert('Running Day One CLI command...', 'info');
             
-            // Execute the Day One CLI command
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Server responded with status ${response.status}`);
-                    }
-                    return response.text();
-                })
-                .then(result => {
-                    const tagCount = tags.length;
-                    const tagMessage = tagCount === 1 
-                        ? `with tag "${tags[0]}"` 
-                        : `with ${tagCount} tags`;
-                    showAlert(`Saved to Day One successfully ${tagMessage}!`, 'success');
-                })
-                .catch(error => {
-                    showAlert('Error saving to Day One: ' + error.message, 'error');
-                });
+            // Send the exact command to the server
+            fetch('/save-to-dayone', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ command: commandText })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Server responded with status ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(result => {
+                // Show success message
+                showAlert(result.message, 'success');
+                
+                // If we have a UUID and open URL, enable the open entry button
+                if (result.uuid && result.openUrl) {
+                    const openEntryBtn = document.getElementById('open-entry-btn');
+                    openEntryBtn.dataset.url = result.openUrl;
+                    openEntryBtn.disabled = false;
+                }
+            })
+            .catch(error => {
+                showAlert('Error: ' + error.message, 'error');
+            });
+        }
+        
+        // Open the entry in Day One using the dayone:// URL
+        function openDayOneEntry() {
+            const button = document.getElementById('open-entry-btn');
+            const url = button.dataset.url;
+            
+            if (url) {
+                window.location.href = url;
+            }
         }
         
         // Get all selected tags
         function getSelectedTags() {
-            // Start with the default tag
-            const tags = ["DOSampleEntry"];
+            // Start with an empty array
+            const tags = [];
             
-            // Add checked tags from checkboxes (except the default one which is already included)
-            document.querySelectorAll('.tag-checkbox:checked:not([disabled])').forEach(checkbox => {
+            // Add all checked tags from checkboxes
+            document.querySelectorAll('.tag-checkbox:checked').forEach(checkbox => {
                 tags.push(checkbox.value);
             });
             
@@ -419,10 +465,28 @@
             if (document.getElementById('use-custom-date').checked) {
                 const customDate = document.getElementById('custom-date').value;
                 if (customDate) {
-                    const date = new Date(customDate);
-                    const formattedDate = date.toISOString().replace('T', ' ').substring(0, 19);
+                    // Format as "month/day/year hour:minute AM/PM" which Day One CLI seems to handle best
+                    const dateObj = new Date(customDate);
+                    const month = dateObj.getMonth() + 1; // getMonth() is 0-indexed
+                    const day = dateObj.getDate();
+                    const year = dateObj.getFullYear();
+                    
+                    // Use locale string to get AM/PM format
+                    const timeStr = dateObj.toLocaleTimeString('en-US', { 
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true 
+                    });
+                    
+                    const formattedDate = `${month}/${day}/${year} ${timeStr}`;
                     command += ` --date="${formattedDate}"`;
                 }
+            }
+            
+            // Add timezone if provided
+            const timezone = document.getElementById('time-zone').value;
+            if (timezone) {
+                command += ` -z "${timezone}"`;
             }
             
             // Add journal if provided
@@ -436,9 +500,11 @@
                 command += ' --starred';
             }
             
-            // Add tags
+            // Add tags only if explicitly selected
             const tags = getSelectedTags();
-            command += ` --tags ${formatTagsForCommand(tags)}`;
+            if (tags.length > 0) {
+                command += ` --tags ${formatTagsForCommand(tags)}`;
+            }
             
             document.getElementById('command-preview').textContent = command;
         }
@@ -464,47 +530,49 @@
             updateCommandPreview();
         });
         
-        // Toggle show command
-        document.getElementById('show-command').addEventListener('change', function() {
-            if (this.checked) {
-                updateCommandPreview();
-            }
-        });
-        
         // Update command preview when entry text changes
-        document.getElementById('entry-text').addEventListener('input', function() {
-            if (document.getElementById('show-command').checked) {
-                updateCommandPreview();
-            }
-        });
+        document.getElementById('entry-text').addEventListener('input', updateCommandPreview);
         
         // Update command preview when custom date changes
-        document.getElementById('custom-date').addEventListener('change', function() {
-            if (document.getElementById('show-command').checked) {
-                updateCommandPreview();
-            }
+        document.getElementById('custom-date').addEventListener('change', updateCommandPreview);
+        
+        // Copy command to clipboard
+        document.getElementById('copy-command-btn').addEventListener('click', function() {
+            const command = document.getElementById('command-preview').textContent;
+            navigator.clipboard.writeText(command)
+                .then(() => {
+                    showAlert('Command copied to clipboard!', 'success');
+                })
+                .catch(err => {
+                    showAlert('Failed to copy command: ' + err, 'error');
+                });
         });
         
         // Add event listeners for tag checkboxes
         document.querySelectorAll('.tag-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                if (document.getElementById('show-command').checked) {
-                    updateCommandPreview();
-                }
-            });
+            checkbox.addEventListener('change', updateCommandPreview);
         });
         
         // Add event listener for custom tags input
-        document.getElementById('custom-tags').addEventListener('input', function() {
-            if (document.getElementById('show-command').checked) {
-                updateCommandPreview();
-            }
-        });
+        document.getElementById('custom-tags').addEventListener('input', updateCommandPreview);
+        
+        // Add event listener for starred checkbox
+        document.getElementById('starred').addEventListener('change', updateCommandPreview);
+        
+        // Add event listener for journal name
+        document.getElementById('journal-name').addEventListener('input', updateCommandPreview);
+        
+        // Add event listener for timezone
+        document.getElementById('time-zone').addEventListener('change', updateCommandPreview);
+        
+        // Update command preview initially
+        updateCommandPreview();
         
         // Event listeners
         document.getElementById('bio-selector').addEventListener('change', updateSelectedBio);
         document.getElementById('create-entry-btn').addEventListener('click', createEntry);
         document.getElementById('save-to-dayone-btn').addEventListener('click', saveToJournal);
+        document.getElementById('open-entry-btn').addEventListener('click', openDayOneEntry);
     </script>
 </body>
 </html>
